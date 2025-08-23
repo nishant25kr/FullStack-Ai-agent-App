@@ -1,35 +1,35 @@
-import { Inngest, NonRetriableError } from "inngest";
-import User from "../../model/user.model";
-import { sendMail } from "../../utils/mailer";
+import { inngest } from "../client.js";
+import User from "../../models/user.js";
+import { NonRetriableError } from "inngest";
+import { sendMail } from "../../utils/mailer.js";
 
-export const onUserSignup = Inngest.createFunction(
+export const onUserSignup = inngest.createFunction(
   { id: "on-user-signup", retries: 2 },
   { event: "user/signup" },
   async ({ event, step }) => {
     try {
       const { email } = event.data;
-
-      const userObj = await step.run("get-user-email", async () => {
-        const user = await User.findOne({ email });
-        if (!user) {
+      const user = await step.run("get-user-email", async () => {
+        const userObject = await User.findOne({ email });
+        if (!userObject) {
           throw new NonRetriableError("User no longer exists in our database");
         }
-        return user;
+        return userObject;
       });
 
-      await step.run("send-welcome-email", async () => {
-        const subject = "Welcome to the app";
-        const message = `Hi ${userObj.name || ""},
-        
-Thanks for signing up, we are glad to have you onboard!`;
-
-        await sendMail(email, subject, message);
+      await setp.run("send-welcome-email", async () => {
+        const subject = `Welcome to the app`;
+        const message = `Hi,
+            \n\n
+            Thanks for signing up. We're glad to have you onboard!
+            `;
+        await sendMail(user.email, subject, message);
       });
 
       return { success: true };
     } catch (error) {
-      console.error(error.message);
-      return { success: false, error: error.message };
+      console.error("❌ Error running step", error.message);
+      return { success: false };
     }
   }
 );
