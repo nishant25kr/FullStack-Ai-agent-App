@@ -2,12 +2,12 @@ import express from "express";
 import mongoose from "mongoose";
 import cors from 'cors'
 import { config } from 'dotenv';
-import userRoute from "./routes/user"
-import ticketRoute from "./routes/ticket"
+import userRoute from "./routes/user.js"
+import ticketRoute from "./routes/ticket.js"
 import {serve} from "inngest/express"
-import {inngest} from "./inngest/client"
-import { onUserSignup } from "./inngest/functions/on-signup";
-import { onTicketCreated } from "./inngest/functions/on-ticket-create";
+import {inngest} from "./inngest/client.js"
+import { onUserSignup } from "./inngest/functions/on-signup.js";
+import { onTicketCreated } from "./inngest/functions/on-ticket-create.js";
 
 config();
 const PORT = process.env.PORT || 3000
