@@ -4,6 +4,8 @@ import Ticket from "../model/ticket.model.js";
 export const createTicket = async (req, res) => {
   try {
     const { title, description } = req.body;
+
+    console.log(title,description)
     if (!title || !description) {
       return res
         .status(400)
