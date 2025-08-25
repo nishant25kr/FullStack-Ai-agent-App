@@ -15,6 +15,11 @@ const app = express()
 app.use(cors())
 app.use(express.json())
 
+
+app.get("/", (req, res) => {
+  res.send("<h1>Server is running</h1>");
+});
+
 app.use('/api/auth', userRoute)
 app.use('/api/ticket', ticketRoute)
 

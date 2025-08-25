@@ -1,9 +1,7 @@
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
-
 function Signup() {
-
   const [form, setForm] = useState({ email: "", password: "" })
   const [loading, setLoading] = useState(false)
   const navigate = useNavigate()
@@ -17,36 +15,34 @@ function Signup() {
     setLoading(true)
 
     try {
-      const res = await fetch(`${import.meta.env.VITE_SERVER_URL}/auth/signup`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(form),
-        })
-      console.log(res)
+      console.log("hi")
+      const res = await fetch(`${import.meta.env.VITE_SERVER_URL}/auth/signup`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(form),
+      })
+      console.log("HI")
+
       const data = await res.json()
+      console.log("Signup Response:", data)
 
       if (res.ok) {
-        localStorage.setItem("token", data.token);
-        localStorage.setItem("user", JSON.stringify(data.user));
-        navigate("/");
+        localStorage.setItem("token", data.token)
+        localStorage.setItem("user", JSON.stringify(data.user))
+        navigate("/")
       } else {
-        alert(data.message || "Signup failed");
+        alert(data.message || "Signup failed")
       }
-
     } catch (error) {
-      alert("Something went wrong");
-      console.error(err);
+      alert("Something went wrong")
+      console.error(error) 
     } finally {
-      setLoading(false);
+      setLoading(false)
     }
-
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center  bg-base-200">
+    <div className="min-h-screen flex items-center justify-center bg-base-200">
       <div className="card w-full max-w-sm shadow-xl bg-base-100">
         <form onSubmit={handleSignup} className="card-body">
           <h2 className="card-title justify-center">Sign Up</h2>
